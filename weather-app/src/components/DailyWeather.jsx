@@ -1,4 +1,48 @@
-import { useState, useEffect } from "react";
-/* Link do użycia:
-https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=temperature_2m_max,temperature_2m_min,wind_speed_10m_max,wind_direction_10m_dominant,weather_code&timezone=auto
-*/
+import { Wind, Compass, ArrowUp, ArrowDown } from 'lucide-react';
+import { getWeatherIcon, getWeatherDescription } from '../utilities';
+
+const DailyWeather = ({ date, maxTemp, minTemp, windSpeed, windDirection, weatherCode }) => {
+    
+    const formatShortDate = (fullDate) => {
+        const parts = fullDate.split('-');
+        if (parts.length === 3) {
+            return `${parts[1]}-${parts[2]}`;
+        }
+        return fullDate;
+    };
+
+    return (
+        <div className="next-day">
+            <div className="main-small">
+                <div className="icon-small" title={getWeatherDescription(weatherCode)}>
+                    {getWeatherIcon(weatherCode)}
+                </div>
+                <div className="date-time-small">
+                    {formatShortDate(date)}
+                </div>
+            </div>
+            
+            <div>
+                <ArrowUp size={16} color="red" />
+                {maxTemp}°C
+            </div>
+            
+            <div>
+                <ArrowDown size={16} color="blue" />
+                {minTemp}°C
+            </div>
+            
+            <div>
+                <Wind size={16} />
+                {windSpeed} km/h
+            </div>
+            
+            <div>
+                <Compass size={16} />
+                {windDirection}°
+            </div>
+        </div>
+    );
+}
+
+export default DailyWeather;

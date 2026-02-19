@@ -11,7 +11,7 @@ const Search = ( { locationSelected }) => {
         }
 
         const geo = await fetch (
-            'https://geocoding-api.open-meteo.com/v1/search?name=${location}&count=1&language=pl&format=json'
+            `https://geocoding-api.open-meteo.com/v1/search?name=${location}&count=1&language=pl&format=json`
         )
         const geoData = await geo.json()
 
