@@ -9,7 +9,7 @@ function App() {
 
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  const [] = useState(null);
+  const [cityName, setCityName] = useState(null);
 
 
 

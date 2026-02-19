@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import CurrentWeather from './CurrentWeather';
 import DailyWeather from './DailyWeather';
 
-const Weather = ( {lat, lon, city, }) => {
+const Weather = ( {lat, lon, city }) => {
     const [currentWeather, setCurrentWeater] = useState(null);
     const [dailyWeather, setDailyWeather] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -12,15 +12,15 @@ const Weather = ( {lat, lon, city, }) => {
         const fetchData = async () => {
         try {
             const current = await fetch (
-                'https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m,weather_code'
+                'https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m,weather_code'
             )
-            const currentData = await today.json();
+            const currentData = await current.json()
             setCurrentWeater(currentData)
 
             const daily = await fetch (
-                'https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=temperature_2m_max,temperature_2m_min,wind_speed_10m_max,wind_direction_10m_dominant,weather_code&timezone=auto'
+                'https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,wind_speed_10m_max,wind_direction_10m_dominant,weather_code&timezone=auto'
             )
-            const dailyData = await daily.json();
+            const dailyData = await daily.json()
             setDailyWeather(dailyData)
         } catch (error) {
             console.error("Error fetching data:", error)
@@ -61,8 +61,6 @@ const Weather = ( {lat, lon, city, }) => {
                      windSpeed={dailyWeather.windspeed_10m_max[key]}
                      windDirection={dailyWeather.winddirection_10m_dominant[key]}
                      weathercode={dailyWeather.weathercode[key]}
-                     
-                    
                     ></DailyWeather>
                     )   )
             }
