@@ -13,7 +13,7 @@ const DailyWeather = ({ date, maxTemp, minTemp, windSpeed, windDirection, weathe
 
     return (
         <div className="next-day">
-            <div className="main-small">
+            <div className="day-card">
                 <div className="icon-small" title={getWeatherDescription(weatherCode)}>
                     {getWeatherIcon(weatherCode)}
                 </div>
@@ -22,22 +22,22 @@ const DailyWeather = ({ date, maxTemp, minTemp, windSpeed, windDirection, weathe
                 </div>
             </div>
             
-            <div>
+            <div className="detail-icon">
                 <ArrowUp size={16} color="red" />
                 {maxTemp}°C
             </div>
             
-            <div>
+            <div className="detail-icon">
                 <ArrowDown size={16} color="blue" />
                 {minTemp}°C
             </div>
             
-            <div>
+            <div className="detail-icon">
                 <Wind size={16} />
                 {windSpeed} km/h
             </div>
             
-            <div>
+            <div className="detail-icon">
                 <Compass size={16} />
                 {windDirection}°
             </div>
@@ -45,4 +45,4 @@ const DailyWeather = ({ date, maxTemp, minTemp, windSpeed, windDirection, weathe
     );
 }
 
-export default DailyWeather;
+export default DailyWeather

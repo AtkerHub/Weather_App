@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import CurrentWeather from './CurrentWeather';
 import DailyWeather from './DailyWeather';
+import { getWeatherBackground } from "../utilities";
 
 const Weather = ( {lat, lon, city }) => {
     const [currentWeather, setCurrentWeather] = useState(null);
@@ -19,8 +20,16 @@ const Weather = ( {lat, lon, city }) => {
             const currentData = await current.json()
             setCurrentWeather(currentData)
 
+            if(currentData?.current?.weather_code !== undefined) {
+                const bgGradient = getWeatherBackground(currentData.current.weather_code)
+
+                document.body.style.background = bgGradient
+            }
+
+
+
             const daily = await fetch (
-                `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,wind_speed_10m_max,wind_direction_10m_dominant,weather_code&timezone=auto`
+                `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,windspeed_10m_max,winddirection_10m_dominant,weathercode&timezone=auto`
             )
 
             const dailyData = await daily.json()
@@ -40,7 +49,7 @@ const Weather = ( {lat, lon, city }) => {
         return <div>Loading...</div>
     }
 
-    if(!currentWeather || !dailyWeather) {
+    if(!currentWeather?.current || !dailyWeather?.daily) {
         return <div>Error loading weather data. Please try again.</div>
     }
 
@@ -52,19 +61,19 @@ const Weather = ( {lat, lon, city }) => {
                 </div>
             </div>
         
-        <CurrentWeather data={currentWeather} />
+        <CurrentWeather data={currentWeather.current} />
 
         <div className="daily-wrapper">
             {
-                dailyWeather.time.map((day, key) => (
+                dailyWeather.daily.time.map((day, key) => (
                     <DailyWeather
                      key = {key}
                      date = {day}
-                     maxTemp={dailyWeather.temperature_2m_max[key]}
-                     minTemp={dailyWeather.temperature_2m_min[key]}
-                     windSpeed={dailyWeather.wind_speed_10m_max[key]}
-                     windDirection={dailyWeather.wind_direction_10m_dominant[key]}
-                     weathercode={dailyWeather.weather_code[key]}
+                     maxTemp={dailyWeather.daily.temperature_2m_max[key]}
+                     minTemp={dailyWeather.daily.temperature_2m_min[key]}
+                     windSpeed={dailyWeather.daily.windspeed_10m_max[key]}
+                     windDirection={dailyWeather.daily.winddirection_10m_dominant[key]}
+                     weatherCode={dailyWeather.daily.weathercode[key]}
                     ></DailyWeather>
                     )   )
             }
